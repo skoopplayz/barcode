@@ -126,27 +126,3 @@ export function useUpdateItem() {
 // Delete Item
 export function useDeleteItem() {
   const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: async (id: number) => {
-      const url = buildUrl(api.items.delete.path, { id });
-      const res = await fetch(url, { method: "DELETE" });
-      
-      if (!res.ok) {
-        throw new Error("Failed to delete item");
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [api.items.list.path] });
-      toast({ title: "Success", description: "Item deleted successfully" });
-    },
-    onError: (error) => {
-      toast({ 
-        title: "Error", 
-        description: error.message, 
-        variant: "destructive" 
-      });
-    },
-  });
-}
